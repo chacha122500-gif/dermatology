@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumière | Premium Dermatology & Wellness</title>
+    <meta name="description" content="단순한 시술을 넘어, 당신의 가장 빛나는 순간을 찾아주는 하이엔드 프리미엄 안티에이징 공간.">
+    
+    <!-- Tailwind CSS (CDN for standalone HTML) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Cinematic Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Google Fonts: Cormorant Garamond (Serif) & Noto Sans KR (Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F6F2EB', // Warm Ivory
+                            text: '#1A1A1A', // Deep Charcoal
+                            accent: '#D8C7AE', // Herbal Beige
+                            copper: '#B7794B', // Warm Copper
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F6F2EB;
+            color: #1A1A1A;
+            overflow-x: hidden;
+            /* 부드러운 스크롤 바 커스텀 */
+            scrollbar-width: thin;
+            scrollbar-color: #D8C7AE #F6F2EB;
+        }
+        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar-track { background: #F6F2EB; }
+        body::-webkit-scrollbar-thumb { background-color: #D8C7AE; border-radius: 20px; }
+        
+        ::selection { background: #D8C7AE; color: #1A1A1A; }
+        
+        /* 텍스트 줄바꿈 유지 (React break-keep 대체) */
+        .keep-all { word-break: keep-all; }
+        
+        /* 마퀴(Marquee) 애니메이션 키프레임 */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); } /* 내용이 두 번 반복되므로 50% 이동 */
+        }
+        .animate-marquee {
+            animation: marquee 25s linear infinite;
+        }
+
+        /* 펄스(Pulse) 커스텀 */
+        @keyframes customPulse {
+            0%, 100% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
+        }
+        .animate-line-pulse {
+            animation: customPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="antialiased relative">
+
+    <!-- 미세한 질감 오버레이로 고급스러운 지류 느낌 부여 -->
+    <div class="fixed inset-0 pointer-events-none z-[999] opacity-[0.04] mix-blend-multiply" 
+         style="background-image: url('https://www.transparenttextures.com/patterns/stucco.png');"></div>
+
+    <!-- GNB Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 py-6 md:px-8 flex justify-between items-center mix-blend-difference text-[#F6F2EB] opacity-0 translate-y-[-20px]">
+        <div class="text-2xl font-serif tracking-[0.15em] uppercase">
+            Lumière
+        </div>
+        <div class="hidden md:flex items-center gap-12 text-xs tracking-[0.2em] uppercase">
+            <a href="#philosophy" class="hover:opacity-50 transition-opacity">Philosophy</a>
+            <a href="#director" class="hover:opacity-50 transition-opacity">Director</a>
+            <a href="#space" class="hover:opacity-50 transition-opacity">Space</a>
+            <button class="px-6 py-2 border border-[#F6F2EB]/30 rounded-full hover:bg-[#F6F2EB] hover:text-[#1A1A1A] transition-all duration-700">
+                Reservation
+            </button>
+        </div>
+        <!-- Mobile Menu Icon (Visual only for simplicity) -->
+        <button class="md:hidden text-[#F6F2EB]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+    </nav>
+
+    <main>
+        <!-- 1. 이미지가 동그랗게 펼쳐지는 메인 히어로 영역 -->
+        <section class="relative h-screen w-full bg-[#1A1A1A] flex items-center justify-center overflow-hidden">
+            <!-- 마스크 애니메이션 타겟 -->
+            <div id="hero-mask" class="absolute inset-0 w-full h-full" style="clip-path: circle(0% at 50% 50%); filter: brightness(0.5);">
+                <img 
+                    src="https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=2000&auto=format&fit=crop" 
+                    alt="Abstract Light and Skin Texture"
+                    class="w-full h-full object-cover opacity-70"
+                />
+                <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80"></div>
+            </div>
+
+            <!-- 텍스트 영역 -->
+            <div class="relative z-10 text-center text-[#F6F2EB] px-4 hero-text-container">
+                <p class="hero-text opacity-0 translate-y-[50px] text-[10px] md:text-sm tracking-[0.4em] uppercase mb-8 text-[#D8C7AE]">
+                    Premium Dermatology & Wellness
+                </p>
+                <h1 class="hero-text opacity-0 translate-y-[50px] text-4xl md:text-7xl lg:text-8xl font-serif leading-[1.1] tracking-tight">
+                    빛이 머무는 자리,<br />
+                    <span class="italic font-light">당신의 고유한 결을 깨우다.</span>
+                </h1>
+            </div>
+
+            <!-- 스크롤 유도 인디케이터 -->
+            <div id="scroll-indicator" class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-[#F6F2EB]/50 opacity-0">
+                <div class="w-[1px] h-16 bg-gradient-to-b from-[#F6F2EB]/0 via-[#F6F2EB]/50 to-[#F6F2EB]/0 animate-line-pulse"></div>
+                <span class="text-[9px] uppercase tracking-[0.3em]">Scroll</span>
+            </div>
+        </section>
+
+        <!-- 2. 피부과 차별점과 전문성 강조 -->
+        <section id="philosophy" class="py-24 md:py-48 px-6 md:px-24 bg-brand-bg relative z-20">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-16">
+                <div class="md:w-1/3">
+                    <div class="md:sticky md:top-32 gsap-fade-up">
+                        <h2 class="text-xs tracking-[0.2em] uppercase text-brand-copper mb-4">Core Philosophy</h2>
+                        <p class="text-3xl md:text-5xl font-serif leading-tight keep-all">
+                            피부 겉의 증상이 아닌,<br/>
+                            <span class="italic text-brand-text/50">깊은 곳의 자생력</span>을<br/>
+                            연구합니다.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex flex-col gap-20 md:gap-24">
+                    <!-- 항목 1 -->
+                    <div class="border-t border-brand-text/10 pt-8 gsap-fade-up">
+                        <span class="text-brand-accent font-serif text-2xl italic mb-4 block">01</span>
+                        <h3 class="text-xl md:text-2xl font-medium tracking-wide mb-6">Scientific Ritual</h3>
+                        <p class="text-brand-text/70 leading-relaxed text-base md:text-lg font-light keep-all">
+                            공장형 시술을 배제하고, 개인의 피부 두께와 근막의 위치를 3D로 정밀 진단하여 1:1 맞춤형 에이징 리추얼을 설계합니다.
+                        </p>
+                    </div>
+                    <!-- 항목 2 -->
+                    <div class="border-t border-brand-text/10 pt-8 gsap-fade-up">
+                        <span class="text-brand-accent font-serif text-2xl italic mb-4 block">02</span>
+                        <h3 class="text-xl md:text-2xl font-medium tracking-wide mb-6">Private Sanctuary</h3>
+                        <p class="text-brand-text/70 leading-relaxed text-base md:text-lg font-light keep-all">
+                            다른 환자와 동선이 겹치지 않는 100% 1인 프라이빗 룸. 시각과 청각, 후각까지 완벽히 통제된 공간에서 깊은 휴식을 경험합니다.
+                        </p>
+                    </div>
+                    <!-- 항목 3 -->
+                    <div class="border-t border-brand-text/10 pt-8 gsap-fade-up">
+                        <span class="text-brand-accent font-serif text-2xl italic mb-4 block">03</span>
+                        <h3 class="text-xl md:text-2xl font-medium tracking-wide mb-6">Master's Touch</h3>
+                        <p class="text-brand-text/70 leading-relaxed text-base md:text-lg font-light keep-all">
+                            최상위 프리미엄 레이저 장비와 15년 이상의 임상 노하우를 가진 대표 원장의 섬세한 핸드 스킬이 결합된 압도적 결과.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 고급스러운 후기 -->
+        <section class="py-32 md:py-40 bg-brand-text text-[#F6F2EB] flex flex-col items-center justify-center relative overflow-hidden">
+            <!-- 은은한 배경 광원 -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-[#D8C7AE] rounded-full blur-[100px] md:blur-[120px] opacity-[0.08] pointer-events-none"></div>
+            
+            <span class="text-xs tracking-[0.3em] uppercase text-[#D8C7AE] mb-12 md:mb-16 relative z-10 gsap-fade-up">Client's Voice</span>
+            
+            <div class="h-40 flex items-center justify-center px-6 text-center relative z-10 w-full max-w-4xl">
+                <!-- Review 텍스트 컨테이너 -->
+                <div class="absolute w-full px-4">
+                    <p id="review-text" class="text-xl md:text-3xl lg:text-4xl font-serif leading-relaxed italic font-light text-[#F6F2EB]/90 keep-all">
+                        "태어나 처음으로 내 피부에게 미안하고 고마웠던 완벽한 힐링의 시간."
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 인디케이터 (Dots) -->
+            <div class="flex gap-4 mt-12 md:mt-16 relative z-10">
+                <div class="review-dot w-1.5 h-1.5 rounded-full bg-[#D8C7AE] scale-150 transition-all duration-700"></div>
+                <div class="review-dot w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-700"></div>
+                <div class="review-dot w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-700"></div>
+            </div>
+        </section>
+
+        <!-- 4. 의료진 약력 고급스럽게 -->
+        <section id="director" class="py-24 md:py-48 px-6 md:px-24 bg-brand-bg">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-32 items-center">
+                
+                <!-- 의사 사진 -->
+                <div class="w-full lg:w-[45%] aspect-[3/4] relative group overflow-hidden" id="doctor-img-container">
+                    <img 
+                        src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=1000&auto=format&fit=crop" 
+                        alt="Dr. Profile"
+                        class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-[2000ms] scale-105"
+                        id="doctor-img"
+                    />
+                </div>
+                
+                <!-- 약력 텍스트 -->
+                <div class="w-full lg:w-[55%]">
+                    <div class="doctor-text-wrapper">
+                        <span class="text-brand-copper text-xs tracking-[0.2em] uppercase mb-6 block doctor-text">
+                            Medical Director
+                        </span>
+                        <h2 class="text-3xl md:text-5xl lg:text-6xl font-serif leading-tight mb-8 md:mb-12 doctor-text keep-all">
+                            "당신의 가장 아름다운 시절은<br/>아직 오지 않았습니다."
+                        </h2>
+                        <p class="text-base md:text-lg text-brand-text/70 leading-relaxed font-light mb-12 keep-all doctor-text">
+                            수만 번의 임상과 연구 끝에 내린 결론은 하나입니다. 
+                            과도한 주입과 깎아냄이 아닌, <strong>본연의 조직이 스스로 빛을 내도록 돕는 것.</strong><br/><br/>
+                            우리는 피부라는 캔버스 위에 인위적인 그림을 그리지 않습니다. 
+                            당신이 지닌 고유한 선과 결을 되살려, 시간이 흐를수록 깊어지는 우아함을 선사합니다.
+                        </p>
+                        
+                        <div class="space-y-3 text-xs md:text-sm text-brand-text/60 font-light tracking-wide border-t border-brand-text/10 pt-8 doctor-text">
+                            <p>現) 뤼미에르 안티에이징 센터 대표원장</p>
+                            <p>前) 대한미용피부외과학회 수석 이사</p>
+                            <p>Global Anti-aging Master Class 수료</p>
+                        </div>
+                        
+                        <div class="mt-12 font-serif text-2xl md:text-3xl italic text-brand-text doctor-text">
+                            Dr. Han-Joon Kim
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 피부과 내부 영상 공간 스크롤 확장 효과 -->
+        <section id="space" class="py-24 md:py-32 bg-brand-bg flex flex-col items-center relative z-10">
+            <div class="text-center mb-12 md:mb-16 px-4 gsap-fade-up">
+                <h2 class="text-xs tracking-[0.2em] uppercase text-brand-copper mb-4">Sanctuary</h2>
+                <p class="text-2xl md:text-3xl font-serif">오직 당신만을 위해 준비된 심연의 공간</p>
+            </div>
+            
+            <div class="w-full flex justify-center h-[50vh] md:h-[80vh] relative">
+                <!-- 스크롤 시 width 60% -> 100%, borderRadius 40px -> 0px 로 변하는 컨테이너 -->
+                <div id="interior-video" class="h-full overflow-hidden relative cursor-pointer group w-[90%] md:w-[60%] rounded-[20px] md:rounded-[40px]">
+                    <img 
+                        src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2000&auto=format&fit=crop" 
+                        alt="Clinic Interior"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3000ms] ease-out"
+                    />
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-700"></div>
+                    
+                    <!-- 재생 버튼 UI -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="w-16 h-16 md:w-24 md:h-24 rounded-full border border-white/40 backdrop-blur-md flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-all duration-700">
+                            <!-- Play Icon SVG -->
+                            <svg class="ml-1 md:ml-2 w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 갖춰진 장비들 자동 슬라이드 -->
+        <section class="py-20 md:py-24 bg-[#E8E3D9] overflow-hidden border-y border-brand-text/5">
+            <div class="mb-10 md:mb-12 px-6 md:px-24 flex flex-col md:flex-row justify-between md:items-end gap-4">
+                <h2 class="text-2xl md:text-3xl font-serif">Original Premium Devices</h2>
+                <span class="text-[10px] md:text-xs tracking-widest uppercase text-brand-text/50">Uncompromised Quality</span>
+            </div>
+            
+            <div class="relative flex whitespace-nowrap overflow-hidden w-full">
+                <!-- 무한 롤링 텍스트 (CSS Animation 적용) -->
+                <div class="flex animate-marquee items-center min-w-max">
+                    <!-- Text Block 1 (원본) -->
+                    <div class="flex items-center gap-10 md:gap-16 px-5 md:px-8">
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">THERMAGE FLX</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">ULTHERAPY</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">TITANIUM</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">REJURAN HEALER</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">PICO PLUS</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">POTENZA</span>
+                        <span class="text-brand-copper">•</span>
+                    </div>
+                    <!-- Text Block 2 (복제 - 매끄러운 루프용) -->
+                    <div class="flex items-center gap-10 md:gap-16 px-5 md:px-8">
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">THERMAGE FLX</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">ULTHERAPY</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">TITANIUM</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">REJURAN HEALER</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">PICO PLUS</span>
+                        <span class="text-brand-copper">•</span>
+                        <span class="text-3xl md:text-6xl font-serif text-brand-text/30 uppercase tracking-tighter">POTENZA</span>
+                        <span class="text-brand-copper">•</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 유튜브, 인스타, 블로그 -->
+        <section class="py-24 md:py-32 px-6 md:px-24 bg-brand-bg">
+            <div class="text-center mb-16 md:mb-20 gsap-fade-up">
+                <h2 class="text-3xl md:text-4xl font-serif mb-4">Lumière's Archive</h2>
+                <p class="text-brand-text/50 font-light text-sm md:text-base">다양한 채널에서 우리의 철학을 만나보세요.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+                <!-- 인스타그램 -->
+                <a href="#" class="social-card group block p-8 md:p-10 border border-brand-text/10 hover:bg-brand-text hover:text-[#F6F2EB] transition-colors duration-500 rounded-sm">
+                    <svg class="w-8 h-8 mb-8 text-brand-copper group-hover:text-brand-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    <h3 class="text-xl font-serif mb-2">Instagram</h3>
+                    <p class="text-xs md:text-sm font-medium tracking-wider mb-4 opacity-70">@lumiere_clinic</p>
+                    <p class="text-sm font-light opacity-50 group-hover:opacity-70">매일 기록되는 빛의 순간들</p>
+                    <div class="mt-8 flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                        Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+                
+                <!-- 유튜브 -->
+                <a href="#" class="social-card group block p-8 md:p-10 border border-brand-text/10 hover:bg-brand-text hover:text-[#F6F2EB] transition-colors duration-500 rounded-sm">
+                    <svg class="w-8 h-8 mb-8 text-brand-copper group-hover:text-brand-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    <h3 class="text-xl font-serif mb-2">YouTube</h3>
+                    <p class="text-xs md:text-sm font-medium tracking-wider mb-4 opacity-70">Lumière TV</p>
+                    <p class="text-sm font-light opacity-50 group-hover:opacity-70">원장님이 직접 전하는 안티에이징의 진실</p>
+                    <div class="mt-8 flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                        Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+
+                <!-- 블로그 -->
+                <a href="#" class="social-card group block p-8 md:p-10 border border-brand-text/10 hover:bg-brand-text hover:text-[#F6F2EB] transition-colors duration-500 rounded-sm">
+                    <svg class="w-8 h-8 mb-8 text-brand-copper group-hover:text-brand-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <h3 class="text-xl font-serif mb-2">Journal</h3>
+                    <p class="text-xs md:text-sm font-medium tracking-wider mb-4 opacity-70">Official Blog</p>
+                    <p class="text-sm font-light opacity-50 group-hover:opacity-70">깊이 있는 피부 철학과 임상 칼럼</p>
+                    <div class="mt-8 flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                        Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 8. 푸터 - 대표전화, 오시는길, 진료시간 -->
+    <footer class="bg-brand-text text-[#F6F2EB] pt-24 pb-12 px-6 md:px-24">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20 md:mb-24">
+            <!-- Brand -->
+            <div class="lg:col-span-2">
+                <h2 class="text-3xl md:text-4xl font-serif tracking-widest uppercase mb-6">Lumière</h2>
+                <p class="text-[#F6F2EB]/50 font-light text-sm md:text-base max-w-sm leading-relaxed mb-8 keep-all">
+                    단순한 시술을 넘어, 당신의 가장 빛나는 순간을 찾아주는 하이엔드 프리미엄 안티에이징 공간입니다.
+                </p>
+                <p class="text-2xl font-serif text-brand-accent">02. 1234. 5678</p>
+            </div>
+
+            <!-- Info (Location) -->
+            <div>
+                <h3 class="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#F6F2EB]/40 mb-5 md:mb-6">Location</h3>
+                <ul class="text-[#F6F2EB]/80 font-light space-y-3 text-xs md:text-sm">
+                    <li>서울시 강남구 도산대로 123</li>
+                    <li>뤼미에르 스퀘어 4F, 5F (전층)</li>
+                    <li class="pt-2">
+                        <a href="#" class="underline underline-offset-4 hover:text-brand-accent transition-colors">지도 보기</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Hours -->
+            <div>
+                <h3 class="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#F6F2EB]/40 mb-5 md:mb-6">Clinic Hours</h3>
+                <ul class="text-[#F6F2EB]/80 font-light space-y-3 text-xs md:text-sm w-full md:w-5/6">
+                    <li class="flex justify-between"><span>월 - 금</span> <span>10:00 - 20:00</span></li>
+                    <li class="flex justify-between"><span>토요일</span> <span>10:00 - 17:00</span></li>
+                    <li class="flex justify-between text-brand-copper"><span>일/공휴일</span> <span>휴진</span></li>
+                    <li class="pt-4 text-[10px] text-[#F6F2EB]/40">* 100% 사전 예약제로 운영됩니다.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="max-w-7xl mx-auto border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs tracking-widest text-[#F6F2EB]/30 uppercase gap-4 md:gap-0">
+            <p>© 2026 Lumière Clinic. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Use</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 오른쪽에 따라다니는 위젯 - top버튼, 카톡상담 -->
+    <div class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex flex-col gap-3 md:gap-4">
+        <!-- 카카오톡 상담 -->
+        <button class="w-12 h-12 md:w-14 md:h-14 bg-[#FAE100] text-[#391B1B] rounded-full flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:scale-110 hover:-translate-y-1 transition-all duration-300 group relative" aria-label="카카오톡 상담">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 3c-5.52 0-10 3.58-10 8 0 2.85 1.83 5.34 4.6 6.78-.42 1.55-1.5 5.25-1.5 5.25s4.44-3.05 6.13-4.22c.26.02.52.03.77.03 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>
+            <!-- 호버 툴팁 -->
+            <div class="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-brand-text text-white text-[10px] md:text-xs whitespace-nowrap rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden md:block">
+                프라이빗 카톡 상담
+            </div>
+        </button>
+
+        <!-- TOP 버튼 -->
+        <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="w-12 h-12 md:w-14 md:h-14 bg-white/80 backdrop-blur-md border border-brand-text/10 text-brand-text rounded-full flex items-center justify-center shadow-sm hover:bg-brand-text hover:text-white hover:scale-110 transition-all duration-300" aria-label="위로 가기">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+        </button>
+    </div>
+
+    <!-- 모든 애니메이션 및 인터랙션 로직 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 럭셔리한 Easing 설정
+            const luxuryEase = "power3.out"; // [0.25, 1, 0.5, 1] 와 유사한 부드러운 감속
+
+            // 1. 네비게이션 등장 애니메이션
+            gsap.to("#navbar", {
+                opacity: 1, y: 0, duration: 1.2, delay: 1.5, ease: luxuryEase
+            });
+
+            // 2. 히어로 섹션 마스크 (동그랗게 펼쳐짐) 애니메이션
+            gsap.to("#hero-mask", {
+                clipPath: "circle(150% at 50% 50%)",
+                filter: "brightness(1)",
+                duration: 2.5,
+                delay: 0.2,
+                ease: "power2.inOut" // 조금 더 극적인 확장을 위해
+            });
+
+            // 히어로 텍스트 순차적 Fade Up
+            gsap.to(".hero-text", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                delay: 0.8,
+                ease: luxuryEase
+            });
+
+            // 히어로 스크롤 인디케이터 등장
+            gsap.to("#scroll-indicator", {
+                opacity: 1, duration: 1, delay: 2.5
+            });
+
+            // 3. 공통 Fade Up 애니메이션 (스크롤 시)
+            const fadeUpElements = document.querySelectorAll('.gsap-fade-up');
+            fadeUpElements.forEach((el) => {
+                gsap.fromTo(el, 
+                    { opacity: 0, y: 50 },
+                    {
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 85%", // 화면의 85% 지점 통과 시 시작
+                            toggleActions: "play none none none" // 한 번만 실행
+                        },
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        ease: luxuryEase
+                    }
+                );
+            });
+
+            // 4. 의사 약력 섹션 애니메이션 (사진 스케일 + 텍스트 스태거)
+            const doctorTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#director",
+                    start: "top 70%",
+                }
+            });
+            doctorTl.fromTo("#doctor-img-container", 
+                { opacity: 0, scale: 0.95 },
+                { opacity: 1, scale: 1, duration: 1.5, ease: luxuryEase }
+            ).fromTo(".doctor-text",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: luxuryEase },
+                "-=1.0" // 사진 애니메이션 중간에 텍스트 시작
+            );
+
+            // 5. 인테리어 영상 공간 확장 애니메이션 (스크롤 패럴랙스)
+            // React framer-motion의 useTransform과 완벽하게 동일한 기능
+            gsap.to("#interior-video", {
+                scrollTrigger: {
+                    trigger: "#space",
+                    start: "top bottom", // 섹션 탑이 뷰포트 바텀에 닿을 때
+                    end: "center center", // 섹션 중앙이 뷰포트 중앙에 올 때까지
+                    scrub: true, // 스크롤바와 애니메이션 동기화
+                },
+                width: "100%",
+                borderRadius: "0px",
+                ease: "none"
+            });
+
+            // 6. 소셜 미디어 카드 순차적 등장
+            const socialCards = document.querySelectorAll('.social-card');
+            gsap.fromTo(socialCards, 
+                { opacity: 0, y: 30 },
+                {
+                    scrollTrigger: {
+                        trigger: socialCards[0],
+                        start: "top 85%",
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    stagger: 0.2, // 0.2초 간격으로 하나씩
+                    ease: luxuryEase
+                }
+            );
+
+            // 7. 리뷰 캐러셀 (Vanilla JS 로직)
+            const reviews = [
+                "태어나 처음으로 내 피부에게 미안하고 고마웠던 완벽한 힐링의 시간.",
+                "거울 속 내 모습이 이토록 우아하게 느껴진 것은 처음입니다.",
+                "단순한 치료가 아닌, 나만을 위한 고귀한 의식을 치른 기분."
+            ];
+            let currentReviewIndex = 0;
+            const reviewTextEl = document.getElementById('review-text');
+            const reviewDots = document.querySelectorAll('.review-dot');
+
+            setInterval(() => {
+                // Fade out
+                gsap.to(reviewTextEl, {
+                    opacity: 0, y: -20, filter: "blur(10px)", duration: 0.8, ease: luxuryEase,
+                    onComplete: () => {
+                        // Text Change
+                        currentReviewIndex = (currentReviewIndex + 1) % reviews.length;
+                        reviewTextEl.textContent = `"${reviews[currentReviewIndex]}"`;
+                        
+                        // Dots update
+                        reviewDots.forEach((dot, i) => {
+                            if (i === currentReviewIndex) {
+                                dot.classList.replace('bg-white/20', 'bg-[#D8C7AE]');
+                                dot.classList.add('scale-150');
+                            } else {
+                                dot.classList.replace('bg-[#D8C7AE]', 'bg-white/20');
+                                dot.classList.remove('scale-150');
+                            }
+                        });
+
+                        // Fade In
+                        gsap.fromTo(reviewTextEl, 
+                            { opacity: 0, y: 20, filter: "blur(10px)" }, 
+                            { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: luxuryEase }
+                        );
+                    }
+                });
+            }, 5000); // 5초마다 변경
+        });
+    </script>
+</body>
+</html>
